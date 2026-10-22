@@ -1,0 +1,252 @@
+INTERLIS 2.3;
+
+/** Modelo extendido de Rondas Hídricas.
+ * 
+ * El modelo extendido de Rondas Hídricas permite gestionar y estructurar la información asociada al acotamiento, delimitación y establecimiento de estrategias de manejo ambiental de las rondas hídricas del país. El modelo estandariza los dominios, atributos y relaciones relacionados con la faja paralela y el área de protección o conservación aferente, con el propósito de facilitar la interoperabilidad y el intercambio de información entre las autoridades ambientales, los entes territoriales y las demás entidades y actores sectoriales involucrados en la administración del recurso hídrico y el ordenamiento del territorio.
+ */
+!!@ technicalContact="Dirección de Gestión Integral del Recurso Hídrico"
+MODEL LADM_COL_v_1_0_0_Ext_RHC (es)
+AT "mailto:recursohidrico@minambiente.gov.co"
+VERSION "1.0.0"  =
+  IMPORTS LADM_COL_v_4_0_1_Nucleo;
+
+  DOMAIN
+
+    /** Define el tipo de cuerpo de agua asociado a la ronda hídrica, de acuerdo con las categorías establecidas: nacimiento, léntico o lótico.
+     */
+    RHC_CuerpoAguaTipo = (
+      /** Lugar en el que el agua emerge de forma natural desde una roca o el suelo y fluye hacia la superficie o hacia una masa de agua superficial (“manantial” en OMM y UNESCO, 2012) y que puede ser el origen de un río (“fuente” en OMM y UNESCO, 2012).
+       */
+      !!@ ili2db.dispName=Nacimiento
+      Nacimiento,
+      /** Característica   de   un   hábitat   de   agua   dulce   fluyente, (OMM y UNESCO, 2012).
+       */
+      !!@ ili2db.dispName=Lótico
+      Lotico,
+      /** Dícese    de    un    hábitat    de    agua    dulce    caracterizado por aguas en calma o quietas, (OMM y UNESCO, 2012).
+       */
+      !!@ ili2db.dispName=Léntico
+      Lentico
+    );
+
+    /** Tipo de derecho asociado a la ronda hídrica.
+     */
+    !!@ ili2db.dispName="(RHC) Tipo de derecho"
+    RHC_DerechoTipo = (
+      /** Proceso mediante el cual la Autoridad Ambiental competente define el límite físico de la ronda hídrica de los cuerpos de agua en su jurisdicción, (ítem 1 del artículo 2.2.3.2.3A.2 del Decreto 1076 de 2015).
+       */
+      !!@ ili2db.dispName=Acotar
+      Acotar
+    );
+
+    /** Define la estrategio de manejo de la ronda hídrica.
+     */
+    RHC_EstrategiaManejoAmbientalTipo = (
+      /** Áreas para mantener la composición, estructura y función de la biodiversidad, conforme su dinámica natural y evitando al máximo la intervención humana y sus efectos.
+       */
+      !!@ ili2db.dispName=Preservación
+      Preservacion,
+      /** Áreas para restablecer parcial o totalmente la composición, estructura y función de la biodiversidad, que hayan sido alterados o degradados.
+       */
+      !!@ ili2db.dispName=Restauración
+      Restauracion,
+      /** Áreas para utilizar los componentes de la biodiversidad de un modo y a un ritmo que no ocasione su disminución o degradación a largo plazo alterando los atributos básicos de composición, estructura y función, con lo cual se mantienen las posibilidades de esta de satisfacer las necesidades y las aspiraciones de las generaciones actuales y futuras.
+       */
+      !!@ ili2db.dispName="Uso sostenible"
+      Uso_Sostenible
+    );
+
+    /** Define el acto admisitrativo relacionado con la ronda hídrica.
+     */
+    !!@ ili2db.dispName="(RHC) Tipo de fuente administrativa"
+    RHC_FuenteAdministrativaTipo
+    EXTENDS LADM_COL_v_4_0_1_Nucleo.LADM_Nucleo.COL_FuenteAdministrativaTipo = (
+      !!@ ili2db.dispName="Documento público"
+      Documento_Publico(
+        /** Acto administrativo de carácter general mediante el cual un órgano colegiado adopta sus decisiones. En el sector ambiental corresponde a los actos del Consejo Directivo de las autoridades ambientales; en el nivel territorial, a los de los concejos municipales y distritales y las juntas administradoras locales.
+         */
+        !!@ ili2db.dispName="(Documento público) Acuerdo"
+        Acuerdo,
+        /** Decisión administrativa emitida por una autoridad administrativa en ejercicio de sus funciones, que tiene efectos jurídicos dentro de su ámbito de competencia. Las resoluciones se utilizan para regular, interpretar, aplicar o ejecutar disposiciones legales o reglamentarias y son de carácter obligatorio para las personas o entidades a las que se dirigen.
+         */
+        !!@ ili2db.dispName="(Documento público) Resolución"
+        Resolucion
+      )
+    );
+
+    /** Tipo de responsabilidad asociado a la ronda hídrica.
+     */
+    !!@ ili2db.dispName="(RHC) Tipo de responsabilidad"
+    RHC_ResponsabilidadTipo = (
+      /** El Decreto 2245 de 2017, establece que tanto para la faja paralela como para el área de protección o conservación aferente se establecerán directrices de manejo ambiental, conforme a lo dispuesto en la "Guía Técnica de Criterios para el Acotamiento de las Rondas Hídricas en Colombia".
+       */
+      !!@ ili2db.dispName="Definir estrategia de manejo ambiental"
+      Definir_Estrategia_Manejo_Ambiental
+    );
+
+  TOPIC RHC
+  EXTENDS LADM_COL_v_4_0_1_Nucleo.LADM_Nucleo =
+    BASKET OID AS INTERLIS.UUIDOID;
+    OID AS INTERLIS.UUIDOID;
+    DEPENDS ON LADM_COL_v_4_0_1_Nucleo.LADM_Nucleo;
+
+    /** Agrupa los interesados relacionados con las rondas hídricas, de acuerdo con su participación, competencia o relación con la gestión y administración de estas áreas.
+     */
+    !!@ ili2db.dispName="(RHC) Agrupación de interesados"
+    CLASS RHC_AgrupacionInteresados
+    EXTENDS LADM_COL_v_4_0_1_Nucleo.LADM_Nucleo.COL_AgrupacionInteresados =
+    END RHC_AgrupacionInteresados;
+
+    /** Define el tipo de derecho asociado a las rondas hídricas.
+     */
+    !!@ ili2db.dispName="(RHC) Derecho"
+    CLASS RHC_Derecho
+    EXTENDS LADM_COL_v_4_0_1_Nucleo.LADM_Nucleo.COL_DRR =
+      /** Establece el tipo de derecho asociado con la ronda hídrica.
+       */
+      !!@ ili2db.dispName="Tipo de derecho"
+      Tipo : MANDATORY LADM_COL_v_1_0_0_Ext_RHC.RHC_DerechoTipo;
+    END RHC_Derecho;
+
+    /** Identifica el acto administrativo mediante el cual se establece el acotamiento de la ronda hídrica.
+     */
+    !!@ ili2db.dispName="(RHC) Fuente administrativa"
+    CLASS RHC_FuenteAdministrativa
+    EXTENDS LADM_COL_v_4_0_1_Nucleo.LADM_Nucleo.COL_FuenteAdministrativa =
+      /** Define el tipo acto admisitrativo relacionado con la ronda hídrica.
+       */
+      !!@ ili2db.dispName="Tipo de Fuente Administrativa"
+      Tipo (EXTENDED) : MANDATORY LADM_COL_v_1_0_0_Ext_RHC.RHC_FuenteAdministrativaTipo;
+    END RHC_FuenteAdministrativa;
+
+    !!@ ili2db.dispName="(RHC) Fuente espacial"
+    CLASS RHC_FuenteEspacial
+    EXTENDS LADM_COL_v_4_0_1_Nucleo.LADM_Nucleo.COL_FuenteEspacial =
+    END RHC_FuenteEspacial;
+
+    /** Identifica el interesado asociado con los derechos, restricciones y responsabilidades (DRR) de la ronda hídrica.
+     */
+    !!@ ili2db.dispName="(RHC) Interesado"
+    CLASS RHC_Interesado
+    EXTENDS LADM_COL_v_4_0_1_Nucleo.LADM_Nucleo.COL_Interesado =
+      /** Sigla de la autoridad ambiental.
+       */
+      Sigla : TEXT*20;
+      !!@ ili2db.dispName="Observación Interesado"
+      Observacion : TEXT*255;
+    END RHC_Interesado;
+
+    !!@ ili2db.dispName="(RHC) NU Agrupación unidades espaciales"
+    CLASS RHC_NU_AgrupacionUnidadesEspaciales
+    EXTENDS LADM_COL_v_4_0_1_Nucleo.LADM_Nucleo.COL_AgrupacionUnidadesEspaciales =
+    END RHC_NU_AgrupacionUnidadesEspaciales;
+
+    !!@ ili2db.dispName="(RHC) NU Cadenas caras límite"
+    CLASS RHC_NU_CadenaCarasLimite
+    EXTENDS LADM_COL_v_4_0_1_Nucleo.LADM_Nucleo.COL_CadenaCarasLimite =
+    END RHC_NU_CadenaCarasLimite;
+
+    !!@ ili2db.dispName="(RHC) NU Punto"
+    CLASS RHC_NU_Punto
+    EXTENDS LADM_COL_v_4_0_1_Nucleo.LADM_Nucleo.COL_Punto =
+    END RHC_NU_Punto;
+
+    /** Define el tipo de responsabilidad asociado a la ronda hídrica.
+     */
+    !!@ ili2db.dispName="(RHC) Responsabilidad"
+    CLASS RHC_Responsabilidad
+    EXTENDS LADM_COL_v_4_0_1_Nucleo.LADM_Nucleo.COL_DRR =
+      /** Establece el tipo de responsabilidad asociado a la ronda hídrica.
+       */
+      Tipo : MANDATORY LADM_COL_v_1_0_0_Ext_RHC.RHC_ResponsabilidadTipo;
+    END RHC_Responsabilidad;
+
+    /** Contiene la información correspondiente al tipo de estrategia de manejo ambiental.
+     */
+    !!@ ili2db.dispName="(RHC) UAB Estrategia de manejo ambiental"
+    CLASS RHC_UAB_EstrategiaManejoAmbiental
+    EXTENDS LADM_COL_v_4_0_1_Nucleo.LADM_Nucleo.COL_UnidadAdministrativaBasica =
+      /** Define el tipo de estrategia ambiental para la ronda hídrica.
+       */
+      !!@ ili2db.dispName="Tipo de estrategia de manejo"
+      Estrategia : MANDATORY LADM_COL_v_1_0_0_Ext_RHC.RHC_EstrategiaManejoAmbientalTipo;
+    END RHC_UAB_EstrategiaManejoAmbiental;
+
+    /** Contiene la información alfanumérica que caracteriza y describe la Unidad Administrativa Básica (UAB) asociada a la ronda hídrica.
+     */
+    !!@ ili2db.dispName="(RHC) UAB Ronda hídrica"
+    CLASS RHC_UAB_RondaHidrica
+    EXTENDS LADM_COL_v_4_0_1_Nucleo.LADM_Nucleo.COL_UnidadAdministrativaBasica =
+      /** Identifica de manera única la ronda hídrica dentro del modelo de información.
+       */
+      Identificador : MANDATORY TEXT*255;
+      /** Contiene el nombre oficial asignado a la ronda hídrica.
+       */
+      !!@ ili2db.dispName="Nombre de la ronda hídrica"
+      Nombre_Ronda_Hidrica : TEXT*255;
+      /** Define el tipo de cuerpo de agua asociado a la ronda hídrica, de acuerdo con las categorías establecidas: nacimiento, léntico o lótico.
+       */
+      !!@ ili2db.dispName="(RHC) Tipo de cuerpo de agua"
+      Tipo_Cuerpo_Agua : LADM_COL_v_1_0_0_Ext_RHC.RHC_CuerpoAguaTipo;
+      /** Contiene la longitud acotada del cuerpo de agua, expresada en kilómetros.
+       */
+      !!@ ili2db.dispName="(RHC) Longitud acotada (Km)"
+      Longitud_Acotada_Km : 0.000 .. 10000.000;
+      /** Contiene observaciones o información relevante relacionada con la migración y caracterización de la ronda hídrica.
+       */
+      Observaciones : MTEXT*500;
+      UNIQUE Identificador;
+    END RHC_UAB_RondaHidrica;
+
+    /** Representa la unidad espacial correspondiente al área de protección y conservación aferente de la ronda hídrica.
+     */
+    !!@ ili2db.dispName="(RHC) UE Área de protección y conservación aferente"
+    CLASS RHC_UE_AreaProteccionConservacionAferente
+    EXTENDS LADM_COL_v_4_0_1_Nucleo.LADM_Nucleo.COL_UnidadEspacial =
+      /** Área del área de protección y conservación aferente, expresada en hectáreas (Ha), de acuerdo con el valor establecido en la resolución mediante la cual se realiza su acotamiento.
+       */
+      !!@ ili2db.dispName="Área (Ha) Área de protección y conservación aferente"
+      Area_Ha : 0.000 .. 300000000.000;
+    END RHC_UE_AreaProteccionConservacionAferente;
+
+    /** Representa la unidad espacial correspondiente al cauce permanente asociado a la ronda hídrica.
+     */
+    !!@ ili2db.dispName="(RHC) UE Cauce permanente"
+    CLASS RHC_UE_CaucePermanente
+    EXTENDS LADM_COL_v_4_0_1_Nucleo.LADM_Nucleo.COL_UnidadEspacial =
+      /** Área del cauce permanente, expresada en hectáreas (Ha), de acuerdo con el valor establecido en la resolución mediante la cual se realiza su acotamiento.
+       */
+      !!@ ili2db.dispName="Área (Ha) Cauce permanente"
+      Area_Ha : 0.000 .. 300000000.000;
+    END RHC_UE_CaucePermanente;
+
+    /** Representa la unidad espacial correspondiente a la estrategia de manejo ambiental asociada a la ronda hídrica.
+     */
+    !!@ ili2db.dispName="(RHC) UE Estrategia de manejo ambiental"
+    CLASS RHC_UE_EstrategiaManejoAmbiental
+    EXTENDS LADM_COL_v_4_0_1_Nucleo.LADM_Nucleo.COL_UnidadEspacial =
+      /** Área de la estrategia de manejo ambiental, expresada en hectáreas (Ha), de acuerdo con el valor establecido en la resolución mediante la cual se realiza su acotamiento.
+       */
+      !!@ ili2db.dispName="Área (Ha) Estrategia de manejo ambiental"
+      Area_Ha : 0.000 .. 300000000.000;
+    END RHC_UE_EstrategiaManejoAmbiental;
+
+    /** Representa la unidad espacial correspondiente a la faja paralela de la ronda hídrica.
+     */
+    !!@ ili2db.dispName="(RHC) UE Faja paralela"
+    CLASS RHC_UE_FajaParalela
+    EXTENDS LADM_COL_v_4_0_1_Nucleo.LADM_Nucleo.COL_UnidadEspacial =
+      /** Área de la faja paralela, expresada en hectáreas (Ha), de acuerdo con el valor establecido en la resolución mediante la cual se realiza su acotamiento.
+       */
+      !!@ ili2db.dispName="Área (Ha) Faja paralela"
+      Area_Ha : 0.000 .. 300000000.000;
+    END RHC_UE_FajaParalela;
+
+    ASSOCIATION RHC_RondaHidrica_EstrategiaManejoAmbiental =
+      ronda_hidrica -- {1} RHC_UAB_RondaHidrica;
+      estrategia_manejo -- {0..*} RHC_UAB_EstrategiaManejoAmbiental;
+    END RHC_RondaHidrica_EstrategiaManejoAmbiental;
+
+  END RHC;
+
+END LADM_COL_v_1_0_0_Ext_RHC.

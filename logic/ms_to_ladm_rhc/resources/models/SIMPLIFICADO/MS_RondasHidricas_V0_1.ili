@@ -1,0 +1,201 @@
+INTERLIS 2.3;
+
+/** Modelo simplificado de Rondas hídricas. 
+ * 
+ * El modelo simplificado de Rondas hídricas permite gestionar la información relativa al acotamiento, delimitación y estrategias de manejo ambiental de las rondas hídricas del país, estandarizando los dominios, atributos y relaciones asociados a la faja paralela y el área de protección o conservación aferente, con el objetivo de facilitar el intercambio de datos entre las autoridades ambientales, los entes territoriales y los demás niveles sectoriales que intervienen en la administración del recurso hídrico y en el ordenamiento del territorio.
+ */
+!!@ technicalContact="Dirección de Gestión Integral del Recurso Hídrico"
+MODEL MS_RondasHidricas_V0_1 (es)
+AT "mailto:recursohidrico@minambiente.gov.co"
+VERSION "0.0.1"  =
+  IMPORTS ISO19107_PLANAS_V3_1;
+
+  TOPIC MS_RHC =
+    OID AS INTERLIS.UUIDOID;
+
+    DOMAIN
+
+      /** Define el tipo de cuerpo de agua asociado a la ronda hídrica, de acuerdo con las categorías establecidas: nacimiento, léntico o lótico.
+       */
+      !!@ ili2db.dispName="(MS RHC) Tipo de cuerpo de agua"
+      MS_RHC_CuerpoAguaTipo = (
+        /** Lugar en el que el agua emerge de forma natural desde una roca o el suelo y fluye hacia la superficie o hacia una masa de agua superficial (“manantial” en OMM y UNESCO, 2012) y que puede ser el origen de un río (“fuente” en OMM y UNESCO, 2012).
+         */
+        !!@ ili2db.dispName=Nacimiento
+        Nacimiento,
+        /** Característica   de   un   hábitat   de   agua   dulce   fluyente, (OMM y UNESCO, 2012).
+         */
+        !!@ ili2db.dispName=Lótico
+        Lotico,
+        /** Dícese    de    un    hábitat    de    agua    dulce    caracterizado por aguas en calma o quietas, (OMM y UNESCO, 2012).
+         */
+        !!@ ili2db.dispName=Léntico
+        Lentico
+      );
+
+      /** Define el elemento constituyente de la ronda hídrica.
+       */
+      !!@ ili2db.dispName="(MS RHC) Tipo de elemento constituyente"
+      MS_RHC_ElementoConstituyenteTipo = (
+        /** i) En sistemas lóticos, el cauce permanente es el correspondiente a banca llena o el cauce
+         * natural activo, el cual tiene capacidad hidráulica para transitar el flujo de caudales asociados a la ocurrencia
+         * de eventos de crecientes propias de la dinámica hidrológica de un período intranual normal, es decir, los
+         * eventos producidos principalmente por el paso de la zona de convergencia intertropical. 
+         * 
+         * ii) En sistemas lénticos, se entiende como cauce permanente el límite del lecho frecuentemente 
+         * ocupado por el agua, el cual es el mínimo para mantener el funcionamiento y resiliencia del ecosistema.
+         */
+        !!@ ili2db.dispName="Cauce permanente"
+        Cauce_Permanente,
+        /** La faja paralela constituye el primer elemento de la ronda hídrica y corresponde al espacio adyacente al cauce permanente o a la línea de mareas máximas, según el tipo de cuerpo de agua. De acuerdo con el Decreto 1076 de 2015, comprende una franja de hasta treinta (30) metros de ancho; sin embargo, la Guía Técnica establece que su delimitación responde al análisis funcional desarrollado durante el proceso de acotamiento y no exclusivamente a una distancia uniforme, considerando las características hidrológicas y geomorfológicas del sistema hídrico (Decreto 2245 de 2017).
+         */
+        !!@ ili2db.dispName="Faja paralela"
+        Faja_Paralela,
+        /** El área de protección o conservación aferente corresponde al segundo elemento constitutivo de la ronda hídrica. Su delimitación incorpora las áreas necesarias para mantener la funcionalidad hidrológica, geomorfológica y ecosistémica del cuerpo de agua, integrando los resultados obtenidos mediante la aplicación de los criterios técnicos definidos por la Guía de Acotamiento.
+         */
+        !!@ ili2db.dispName="Área de protección o conservación aferente"
+        Area_Proteccion_Conservacion_Aferente
+      );
+
+      /** Define la estrategia de manejo de la ronda hídrica.
+       */
+      !!@ ili2db.dispName="(MS RHC) Tipo de estrategia de manejo"
+      MS_RHC_EstrategiaManejoAmbientalTipo = (
+        /** Áreas para mantener la composición, estructura y función de la biodiversidad, conforme su dinámica natural y evitando al máximo la intervención humana y sus efectos.
+         */
+        !!@ ili2db.dispName=Preservación
+        Preservacion,
+        /** Áreas para restablecer parcial o totalmente la composición, estructura y función de la biodiversidad, que hayan sido alterados o degradados.
+         */
+        !!@ ili2db.dispName=Restauración
+        Restauracion,
+        /** Áreas para utilizar los componentes de la biodiversidad de un modo y a un ritmo que no ocasione su disminución o degradación a largo plazo alterando los atributos básicos de composición, estructura y función, con lo cual se mantienen las posibilidades de esta de satisfacer las necesidades y las aspiraciones de las generaciones actuales y futuras.
+         */
+        !!@ ili2db.dispName="Uso Sostenible"
+        Uso_Sostenible
+      );
+
+      /** Define el acto administrativo relacionado con la ronda hídrica.
+       */
+      !!@ ili2db.dispName="(MS RHC) Tipo de fuente administrativa"
+      MS_RHC_FuenteAdministrativaTipo = (
+        !!@ ili2db.dispName="Documento público"
+        Documento_Publico(
+          /** Acto administrativo de carácter general mediante el cual un órgano colegiado adopta sus decisiones. En el sector ambiental corresponde a los actos del Consejo Directivo de las autoridades ambientales; en el nivel territorial, a los de los concejos municipales y distritales y las juntas administradoras locales.
+           */
+          !!@ ili2db.dispName="(Documento público) Acuerdo"
+          Acuerdo,
+          /** Decisión administrativa emitida por una autoridad administrativa en ejercicio de sus funciones, que tiene efectos jurídicos dentro de su ámbito de competencia. Las resoluciones se utilizan para regular, interpretar, aplicar o ejecutar disposiciones legales o reglamentarias y son de carácter obligatorio para las personas o entidades a las que se dirigen.
+           */
+          !!@ ili2db.dispName="(Documento público) Resolución"
+          Resolucion
+        )
+      );
+
+    /** Autoridad ambiental que gestiona la información de la ronda hídrica.
+     */
+    !!@ ili2db.dispName="(MS RHC) Autoridad ambiental"
+    CLASS MS_RHC_AutoridadAmbiental =
+      /** Número de documento de la autoridad ambiental.
+       */
+      !!@ ili2db.dispName="Número de documento"
+      Numero_Documento : MANDATORY TEXT*20;
+      /** Nombre del interesado.
+       */
+      Nombre : TEXT*255;
+      /** Sigla de la autoridad ambiental.
+       */
+      Sigla : TEXT*20;
+    END MS_RHC_AutoridadAmbiental;
+
+    /** Define el tipo de elemento constituyente que conforma la ronda hídrica.
+     */
+    !!@ ili2db.dispName="(MS RHC) Elemento constituyente"
+    CLASS MS_RHC_ElementoConstituyente =
+      /** Define el tipo de elemento constituyente que conforma la ronda hídrica: cauce permanente, faja paralela o área de protección y conservación aferente.
+       */
+      !!@ ili2db.dispName="Tipo de elemento constituyente"
+      Tipo_Elemento_Constituyente : MANDATORY MS_RHC_ElementoConstituyenteTipo;
+      /** Área del elemento constituyente de la ronda hídrica, expresada en hectáreas (ha), de acuerdo con el valor establecido en la resolución mediante la cual se realiza su acotamiento.
+       */
+      !!@ ili2db.dispName="Área (Ha) Elemento constituyente"
+      Area_Ha : 0.000 .. 300000000.000;
+      /** Almacena de forma permanente la geometría de tipo poligonal.
+       */
+      !!@ ili2db.dispName=Geometría
+      Geometria : MANDATORY ISO19107_PLANAS_V3_1.GM_MultiSurface2D;
+    END MS_RHC_ElementoConstituyente;
+
+    /** El Decreto 2245 de 2017, establece en su artículo 2.2.3.2.3A.2 donde define la ronda hídirca, que, tanto para la faja paralela como para el área de protección o conservación aferente se establecerán directrices de manejo ambiental, conforme a lo dispuesto en la "Guía Técnica de Criterios para el Acotamiento de las Rondas Hídricas en Colombia", adoptada mediante la Resolución 957 de 2018.
+     */
+    !!@ ili2db.dispName="(MS RHC) Estrategia de manejo"
+    CLASS MS_RHC_EstrategiaManejoAmbiental =
+      /** Identificador de la ronda hídrica.
+       */
+      Id_Ronda : MANDATORY TEXT*255;
+      /** Define el tipo de estrategia ambiental para la ronda hídrica.
+       */
+      !!@ ili2db.dispName="Estrategia de manejo ambiental"
+      Estrategia : MANDATORY MS_RHC_EstrategiaManejoAmbientalTipo;
+      /** Área del polígono correspondiente a la estrategia de manejo establecida en la resolución, expresada en hectáreas (ha).
+       */
+      !!@ ili2db.dispName="Área (Ha) Estrategia de manejo"
+      Area_Ha : 0.000 .. 200000000.000;
+      /** Almacena la representación espacial de la estrategia de manejo mediante una geometría de tipo polígono.
+       */
+      !!@ ili2db.dispName=Geometría
+      Geometria : MANDATORY ISO19107_PLANAS_V3_1.GM_MultiSurface2D;
+    END MS_RHC_EstrategiaManejoAmbiental;
+
+    /** La ronda hídrica comprende la faja paralela a la línea de mareas máximas o a la del cauce permanente de ríos y lagos, hasta de treinta metros de ancho.
+     * 
+     * Así mismo hará parte de la ronda hídrica el área de protección o conservación aferente. Tanto para la faja paralela como para el área de protección o conservación aferente se establecerán directrices de manejo ambiental, conforme a lo dispuesto en la "Guía Técnica de Criterios para el Acotamiento de las Rondas Hídricas en Colombia", (Artículo 2.2.3.2.3A.2. del Decreto 2245 de 2017).
+     */
+    !!@ ili2db.dispName="(MS RHC) Ronda hídrica"
+    CLASS MS_RHC_RondaHidrica =
+      /** ID interno con el cual se identifica la ronda hídrica.
+       */
+      Identificador : MANDATORY TEXT*255;
+      /** Nombre de la ronda hídrica
+       */
+      !!@ ili2db.dispName="Nombre de la ronda hídrica"
+      Nombre : TEXT*255;
+      /** Define el tipo de cuerpo de agua asociado a la ronda hídrica, de acuerdo con las categorías establecidas: nacimiento, léntico o lótico.
+       */
+      !!@ ili2db.dispName="Tipo de cuerpo de agua"
+      Tipo_Cuerpo_Agua : MS_RHC_CuerpoAguaTipo;
+      /** Define el tipo de acto administrativo relacionado con la ronda hídrica.
+       */
+      !!@ ili2db.dispName="Tipo de fuente administrativa"
+      Tipo_Fuente_Administrativa : MANDATORY MS_RHC_FuenteAdministrativaTipo;
+      /** Nombre con el que se identifica la fuente administrativa mediante la cual se adopta el acotamiento de la ronda hídrica.
+       */
+      !!@ ili2db.dispName="Nombre fuente administrativa"
+      Nombre_Fuente_Administrativa : TEXT*255;
+      /** Fecha de expedición de la fuente administrativa mediante la cual se adopta el acotamiento de la ronda hídrica.
+       */
+      !!@ ili2db.dispName="Fecha de documento fuente"
+      Fecha_Fuente_Administrativa : INTERLIS.XMLDate;
+      /** Dirección URL que permite consultar o acceder a la fuente administrativa mediante la cual se adopta el acotamiento de la ronda hídrica.
+       */
+      !!@ ili2db.dispName="URL fuente administrativa"
+      URL_Fuente_Administrativa : TEXT*4096;
+      /** Contiene la longitud acotada del cuerpo de agua, expresada en kilómetros.
+       */
+      !!@ ili2db.dispName="Longitud acotada (Km)"
+      Longitud_Acotada_Km : 0.000 .. 10000.000;
+      Observaciones : MTEXT*500;
+    END MS_RHC_RondaHidrica;
+
+    ASSOCIATION MS_RHC_RondaHidrica_ElementoConstituyente =
+      ronda_hidrica -- {1} MS_RHC_RondaHidrica;
+      elemento_constituyente -- {0..3} MS_RHC_ElementoConstituyente;
+      /** Una ronda solo puede tener asociado un tipo de elemento constituyente
+       */
+      !!@ name=VALIDADOR_1001
+      UNIQUE ronda_hidrica, elemento_constituyente-> Tipo_Elemento_Constituyente;
+    END MS_RHC_RondaHidrica_ElementoConstituyente;
+
+  END MS_RHC;
+
+END MS_RondasHidricas_V0_1.
