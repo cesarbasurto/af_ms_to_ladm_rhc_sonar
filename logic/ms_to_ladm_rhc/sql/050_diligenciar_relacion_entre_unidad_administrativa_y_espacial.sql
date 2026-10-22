@@ -1,6 +1,8 @@
+{% set process_id = dag_run.conf.get('process_id', params.process_id) %}
+{% set topic_rhc = 'LADM_COL_v_1_0_0_Ext_RHC.RHC' %}
 SET search_path TO
-    input_{{ dag_run.conf.get('process_id', params.process_id) }}, -- Schema modelo simplificado
-    output_{{ dag_run.conf.get('process_id', params.process_id) }}, -- schema modelo LADM extendido
+    input_{{ process_id }}, -- Schema modelo simplificado
+    output_{{ process_id }}, -- schema modelo LADM extendido
     public;
 
 --====================================================
@@ -12,7 +14,7 @@ insert into col_uebaunit (
     baunit_rhc_uab_rondahidrica
 )
 select
-    (select t_id from output_{{ dag_run.conf.get('process_id', params.process_id) }}.t_ili2db_basket where topic = 'LADM_COL_v_1_0_0_Ext_RHC.RHC' limit 1) as t_basket,
+    (select t_id from output_{{ process_id }}.t_ili2db_basket where topic = '{{ topic_rhc }}' limit 1) as t_basket,
     ue.t_id as ue_rhc_ue_caucepermanente,
     uab.t_id as baunit_rhc_uab_rondahidrica
 from ms_rhc_elementoconstituyente e
@@ -31,7 +33,7 @@ insert into col_uebaunit (
     baunit_rhc_uab_rondahidrica
 )
 select
-    (select t_id from output_{{ dag_run.conf.get('process_id', params.process_id) }}.t_ili2db_basket where topic = 'LADM_COL_v_1_0_0_Ext_RHC.RHC' limit 1) as t_basket,
+    (select t_id from output_{{ process_id }}.t_ili2db_basket where topic = '{{ topic_rhc }}' limit 1) as t_basket,
     ue.t_id as ue_rhc_ue_fajaparalela,
     uab.t_id as baunit_rhc_uab_rondahidrica
 from ms_rhc_elementoconstituyente e
@@ -50,7 +52,7 @@ insert into col_uebaunit (
     baunit_rhc_uab_rondahidrica
 )
 select
-    (select t_id from output_{{ dag_run.conf.get('process_id', params.process_id) }}.t_ili2db_basket where topic = 'LADM_COL_v_1_0_0_Ext_RHC.RHC' limit 1) as t_basket,
+    (select t_id from output_{{ process_id }}.t_ili2db_basket where topic = '{{ topic_rhc }}' limit 1) as t_basket,
     ue.t_id as ue_rhc_ue_areaproteccionconservacionaferente,
     uab.t_id as baunit_rhc_uab_rondahidrica
 from ms_rhc_elementoconstituyente e
@@ -72,7 +74,7 @@ insert into col_uebaunit (
     baunit_rhc_uab_estrategiamanejoambiental
 )
 select
-    (select t_id from output_{{ dag_run.conf.get('process_id', params.process_id) }}.t_ili2db_basket where topic = 'LADM_COL_v_1_0_0_Ext_RHC.RHC' limit 1) as t_basket,
+    (select t_id from output_{{ process_id }}.t_ili2db_basket where topic = '{{ topic_rhc }}' limit 1) as t_basket,
     ue.t_id as ue_rhc_ue_estrategiamanejoambiental,
     uab.t_id as baunit_rhc_uab_estrategiamanejoambiental
 from ms_rhc_estrategiamanejoambiental e

@@ -1,6 +1,9 @@
+{% set process_id = dag_run.conf.get('process_id', params.process_id) %}
+{% set topic_rhc = 'LADM_COL_v_1_0_0_Ext_RHC.RHC' %}
+{% set tipo_area_grafica = 'Area_Grafica' %}
 SET search_path TO
-    input_{{ dag_run.conf.get('process_id', params.process_id) }}, -- Schema modelo simplificado
-    output_{{ dag_run.conf.get('process_id', params.process_id) }}, -- schema modelo LADM extendido
+    input_{{ process_id }}, -- Schema modelo simplificado
+    output_{{ process_id }}, -- schema modelo LADM extendido
     public;
 
 --====================================================
@@ -13,8 +16,8 @@ insert into col_areavalor (
     rhc_ue_caucepermanente_area
 )
 select
-    (select t_id from output_{{ dag_run.conf.get('process_id', params.process_id) }}.t_ili2db_basket where topic = 'LADM_COL_v_1_0_0_Ext_RHC.RHC' limit 1) as t_basket,
-    'Area_Grafica' as tipo,
+    (select t_id from output_{{ process_id }}.t_ili2db_basket where topic = '{{ topic_rhc }}' limit 1) as t_basket,
+    '{{ tipo_area_grafica }}' as tipo,
     area_ha as area,
     t_id as rhc_ue_caucepermanente_area
 from rhc_ue_caucepermanente
@@ -28,8 +31,8 @@ insert into col_areavalor (
     rhc_ue_fajaparalela_area
 )
 select
-    (select t_id from output_{{ dag_run.conf.get('process_id', params.process_id) }}.t_ili2db_basket where topic = 'LADM_COL_v_1_0_0_Ext_RHC.RHC' limit 1) as t_basket,
-    'Area_Grafica' as tipo,
+    (select t_id from output_{{ process_id }}.t_ili2db_basket where topic = '{{ topic_rhc }}' limit 1) as t_basket,
+    '{{ tipo_area_grafica }}' as tipo,
     area_ha as area,
     t_id as rhc_ue_fajaparalela_area
 from rhc_ue_fajaparalela
@@ -43,8 +46,8 @@ insert into col_areavalor (
     rhc__rprtccnsrvcnfrnte_area
 )
 select
-    (select t_id from output_{{ dag_run.conf.get('process_id', params.process_id) }}.t_ili2db_basket where topic = 'LADM_COL_v_1_0_0_Ext_RHC.RHC' limit 1) as t_basket,
-    'Area_Grafica' as tipo,
+    (select t_id from output_{{ process_id }}.t_ili2db_basket where topic = '{{ topic_rhc }}' limit 1) as t_basket,
+    '{{ tipo_area_grafica }}' as tipo,
     area_ha as area,
     t_id as rhc__rprtccnsrvcnfrnte_area
 from rhc_ue_areaproteccionconservacionaferente
@@ -58,8 +61,8 @@ insert into col_areavalor (
     rhc_ue_estrtgmnjmbntal_area
 )
 select
-    (select t_id from output_{{ dag_run.conf.get('process_id', params.process_id) }}.t_ili2db_basket where topic = 'LADM_COL_v_1_0_0_Ext_RHC.RHC' limit 1) as t_basket,
-    'Area_Grafica' as tipo,
+    (select t_id from output_{{ process_id }}.t_ili2db_basket where topic = '{{ topic_rhc }}' limit 1) as t_basket,
+    '{{ tipo_area_grafica }}' as tipo,
     area_ha as area,
     t_id as rhc_ue_estrtgmnjmbntal_area
 from rhc_ue_estrategiamanejoambiental

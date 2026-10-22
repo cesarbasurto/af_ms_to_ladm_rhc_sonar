@@ -1,6 +1,7 @@
+{% set process_id = dag_run.conf.get('process_id', params.process_id) %}
 SET search_path TO
-    input_{{ dag_run.conf.get('process_id', params.process_id) }}, -- Schema modelo simplificado
-    output_{{ dag_run.conf.get('process_id', params.process_id) }}, -- schema modelo LADM extendido
+    input_{{ process_id }}, -- Schema modelo simplificado
+    output_{{ process_id }}, -- schema modelo LADM extendido
     public;
 
 --====================================================
@@ -22,7 +23,7 @@ insert into rhc_uab_rondahidrica (
     etl_rondahidrica_id
 )
 select
-    (select t_id from output_{{ dag_run.conf.get('process_id', params.process_id) }}.t_ili2db_basket where topic = 'LADM_COL_v_1_0_0_Ext_RHC.RHC' limit 1) as t_basket,
+    (select t_id from output_{{ process_id }}.t_ili2db_basket where topic = 'LADM_COL_v_1_0_0_Ext_RHC.RHC' limit 1) as t_basket,
     uuid_generate_v4() as t_ili_tid,
     identificador as identificador,
     nombre as nombre_ronda_hidrica,
@@ -55,7 +56,7 @@ insert into rhc_uab_estrategiamanejoambiental (
     etl_estrategiamanejoambiental_id
 )
 select
-    (select t_id from output_{{ dag_run.conf.get('process_id', params.process_id) }}.t_ili2db_basket where topic = 'LADM_COL_v_1_0_0_Ext_RHC.RHC' limit 1) as t_basket,
+    (select t_id from output_{{ process_id }}.t_ili2db_basket where topic = 'LADM_COL_v_1_0_0_Ext_RHC.RHC' limit 1) as t_basket,
     uuid_generate_v4() as t_ili_tid,
     e.estrategia as estrategia,
     uab.t_id as ronda_hidrica,

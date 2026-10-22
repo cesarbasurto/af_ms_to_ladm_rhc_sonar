@@ -1,6 +1,8 @@
+{% set process_id = dag_run.conf.get('process_id', params.process_id) %}
+{% set topic_rhc = 'LADM_COL_v_1_0_0_Ext_RHC.RHC' %}
 SET search_path TO
-    input_{{ dag_run.conf.get('process_id', params.process_id) }}, -- Schema modelo simplificado
-    output_{{ dag_run.conf.get('process_id', params.process_id) }}, -- schema modelo LADM extendido
+    input_{{ process_id }}, -- Schema modelo simplificado
+    output_{{ process_id }}, -- schema modelo LADM extendido
     public;
 
 --====================================================
@@ -18,7 +20,7 @@ insert into rhc_ue_caucepermanente (
     etl_elementoconstituyente_id
 )
 select
-    (select t_id from output_{{ dag_run.conf.get('process_id', params.process_id) }}.t_ili2db_basket where topic = 'LADM_COL_v_1_0_0_Ext_RHC.RHC' limit 1) as t_basket,
+    (select t_id from output_{{ process_id }}.t_ili2db_basket where topic = '{{ topic_rhc }}' limit 1) as t_basket,
     uuid_generate_v4() as t_ili_tid,
     e.area_ha as area_ha,
     st_force3d(e.geometria) as geometria,
@@ -48,7 +50,7 @@ insert into rhc_ue_fajaparalela (
     etl_elementoconstituyente_id
 )
 select
-    (select t_id from output_{{ dag_run.conf.get('process_id', params.process_id) }}.t_ili2db_basket where topic = 'LADM_COL_v_1_0_0_Ext_RHC.RHC' limit 1) as t_basket,
+    (select t_id from output_{{ process_id }}.t_ili2db_basket where topic = '{{ topic_rhc }}' limit 1) as t_basket,
     uuid_generate_v4() as t_ili_tid,
     e.area_ha as area_ha,
     st_force3d(e.geometria) as geometria,
@@ -79,7 +81,7 @@ insert into rhc_ue_areaproteccionconservacionaferente (
     etl_elementoconstituyente_id
 )
 select
-    (select t_id from output_{{ dag_run.conf.get('process_id', params.process_id) }}.t_ili2db_basket where topic = 'LADM_COL_v_1_0_0_Ext_RHC.RHC' limit 1) as t_basket,
+    (select t_id from output_{{ process_id }}.t_ili2db_basket where topic = '{{ topic_rhc }}' limit 1) as t_basket,
     uuid_generate_v4() as t_ili_tid,
     e.area_ha as area_ha,
     st_force3d(e.geometria) as geometria,
@@ -109,7 +111,7 @@ insert into rhc_ue_estrategiamanejoambiental (
     etl_estrategiamanejoambiental_id
 )
 select
-    (select t_id from output_{{ dag_run.conf.get('process_id', params.process_id) }}.t_ili2db_basket where topic = 'LADM_COL_v_1_0_0_Ext_RHC.RHC' limit 1) as t_basket,
+    (select t_id from output_{{ process_id }}.t_ili2db_basket where topic = '{{ topic_rhc }}' limit 1) as t_basket,
     uuid_generate_v4() as t_ili_tid,
     area_ha as area_ha,
     st_force3d(geometria) as geometria,
